@@ -3,7 +3,10 @@ const Submission = require('../models/Submission');
 // Create new submission in database - POST /api/submission
 exports.createSubmission = async (req, res, next) => {
   try {
-    const submissionData = req.body;
+    const submissionData = {
+      ...req.body,
+      status: 'submitted',
+    };
     const submission = await Submission.create(submissionData);
     res.status(201).json({
       success: true,
