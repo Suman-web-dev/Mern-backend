@@ -5,6 +5,7 @@ const {
   getSubmission,
   updateSubmission,
   deleteSubmission,
+  getAllSubmissions,
   getDrafts,
   saveDraft,
 } = require('../controllers/submissionController');
@@ -14,19 +15,20 @@ const upload = require('../middleware/upload');
 // • Routes handle all submission-related API endpoints
 // • Connect URL paths to controller functions
 
-// • Main submission routes
-// • POST /api/submission - Create new submission
-// • GET /api/submission/:id - Get single submission
-// • PUT /api/submission/:id - Update submission
-// • DELETE /api/submission/:id - Delete submission
-router.route('/').post(createSubmission);
-router.route('/:id').get(getSubmission).put(updateSubmission).delete(deleteSubmission);
-
-// • Draft-specific routes
+// • Draft-specific routes (must come before :id to avoid conflicts)
 // • GET /api/submission/drafts - Get all draft submissions
 // • POST /api/submission/save-draft - Save draft
 router.route('/drafts').get(getDrafts);
 router.route('/save-draft').post(saveDraft);
+
+// • Main submission routes
+// • GET /api/submission - Get all submissions (with optional status filter)
+// • POST /api/submission - Create new submission
+// • GET /api/submission/:id - Get single submission
+// • PUT /api/submission/:id - Update submission
+// • DELETE /api/submission/:id - Delete submission
+router.route('/').get(getAllSubmissions).post(createSubmission);
+router.route('/:id').get(getSubmission).put(updateSubmission).delete(deleteSubmission);
 
 // • File upload route
 // • POST /api/submission/upload - Upload file

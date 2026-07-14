@@ -109,6 +109,31 @@ exports.deleteSubmission = async (req, res, next) => {
   }
 };
 
+// • Get all submissions
+// • Returns all submissions with optional status filter
+// • GET /api/submission
+exports.getAllSubmissions = async (req, res, next) => {
+  try {
+    // • Get status filter from query params (optional)
+    const { status } = req.query;
+    
+    // • Build query based on status filter
+    const query = status ? { status } : {};
+    
+    // • Find all submissions matching query, sorted by newest first
+    const submissions = await Submission.find(query).sort('-createdAt');
+
+    // • Send submissions with count
+    res.status(200).json({
+      success: true,
+      count: submissions.length,
+      data: submissions,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // • Get all draft submissions
 // • Returns submissions not yet submitted
 // • GET /api/drafts

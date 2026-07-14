@@ -22,11 +22,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // • Enable CORS (Cross-Origin Resource Sharing)
-// • Allows frontend to make requests to backend
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
-  credentials: true,
-}));
+// • Allows all origins for development
+app.use(cors());
 
 // • Serve static files from uploads directory
 // • Allows accessing uploaded files via URL
