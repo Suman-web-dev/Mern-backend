@@ -12,28 +12,13 @@ const {
 
 const upload = require('../middleware/upload');
 
-// • Routes handle all submission-related API endpoints
-// • Connect URL paths to controller functions
-
-// • Draft-specific routes (must come before :id to avoid conflicts)
-// • GET /api/submission/drafts - Get all draft submissions
-// • POST /api/submission/save-draft - Save draft
+// Routes handle all submission-related API endpoints
 router.route('/drafts').get(getDrafts);
 router.route('/save-draft').post(saveDraft);
-
-// • Main submission routes
-// • GET /api/submission - Get all submissions (with optional status filter)
-// • POST /api/submission - Create new submission
-// • GET /api/submission/:id - Get single submission
-// • PUT /api/submission/:id - Update submission
-// • DELETE /api/submission/:id - Delete submission
 router.route('/').get(getAllSubmissions).post(createSubmission);
 router.route('/:id').get(getSubmission).put(updateSubmission).delete(deleteSubmission);
 
-// • File upload route
-// • POST /api/submission/upload - Upload file
 router.post('/upload', upload.single('file'), (req, res) => {
-  // • Check if file was uploaded
   if (!req.file) {
     return res.status(400).json({
       success: false,
@@ -41,7 +26,6 @@ router.post('/upload', upload.single('file'), (req, res) => {
     });
   }
 
-  // • Send back file information
   res.status(200).json({
     success: true,
     data: {
